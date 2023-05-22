@@ -1,0 +1,105 @@
+<html>
+<head>
+  <style>
+    body {
+      background-color: #f9f9f9;
+      overflow: hidden;
+    }
+
+    .shape {
+      position: absolute;
+      opacity: 1;
+      transition: all 0.5s ease-in-out;
+    }
+
+    .square {
+      background-color: #ffcc66;
+    }
+
+    .circle { 
+      border-radius: 50%;
+      background-color: #66ccff;
+    }
+
+    .cross { 
+      background-color: #ff9999;
+      transform: rotate(45deg);
+    }
+
+    @keyframes shapeAnimation {
+      0% {
+        opacity: 0;
+        transform: translate(50, 100);
+      }
+      100% {
+        opacity: 1;
+        transform: translate(
+          calc(0vw - 50px - 50px * var(--x)),
+          calc(0vh - 50px - 50px * var(--y))
+        );
+      }
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <script>
+      // Генерация случайного числа в заданном диапазоне
+      function getRandomNumber(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      // Генерация случайного цвета в пастельных тонах
+      function getRandomColor() {
+        var letters = '0123456789ABCDEF'.split('');
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
+
+      // Генерация случайной формы и позиции элемента
+      function generateShape() {
+        var shapes = ['square', 'circle', 'cross'];
+        var shape = shapes[Math.floor(Math.random() * shapes.length)];
+        var size = getRandomNumber(5, 50);
+        var posX = getRandomNumber(0, window.innerWidth - size);
+        var posY = getRandomNumber(0, window.innerHeight - size);
+        var color = getRandomColor();
+        var directionX = Math.random() > 0.5 ? 0 : 10;
+        var directionY = Math.random() > 0.5 ? 0 : 10;
+        var element = document.createElement('div');
+        element.className = 'shape ' + shape;
+        element.style.width = size + 'px';
+        element.style.height = size + 'px';
+        element.style.top = posY + 'px';
+        element.style.left = posX + 'px';
+        element.style.backgroundColor = color;
+        element.style.animation = 'shapeAnimation ' + getRandomNumber(5, 50) + 's infinite alternate';
+        element.style.setProperty('--x', directionX);
+        element.style.setProperty('--y', directionY);
+
+        document.body.appendChild(element);
+      }
+
+      // Генерация нескольких форм
+      function generateShapes(count) {
+        for (var i = 0; i < count; i++) {
+          generateShape();
+        }
+      }
+
+      // Генерация форм при загрузке страницы
+      generateShapes(100);
+
+    </script>
+  </div>
+</body>
+</html>
